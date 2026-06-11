@@ -33,9 +33,6 @@ app.post('/v1/senai/pizzaria/pizza', bodyParserJSON, async function(request, res
 
 
 app.get('/v1/senai/pizzaria/pizza', bodyParserJSON, async function(request, response){
-    let dados = request.body
-
-    let contentType = request.headers['content-type']
 
     let result = await controllerPizza.listarPizza()
     
