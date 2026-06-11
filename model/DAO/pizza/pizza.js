@@ -22,11 +22,11 @@ const insert_pizza = async function (pizza) {
             '${pizza.imagem}'
         );`
 
-        //Encaminha para o BD o scriptSQL
+        
         let result = await knexConection.raw(sql)
 
         if (result)
-            return result[0].insertId //Retorna o ID gerado no insert
+            return result[0].insertId
         else
             return false
     } catch (error) {
@@ -34,9 +34,17 @@ const insert_pizza = async function (pizza) {
     }
 }
 
-const select_pizza = async function () {
+const select_ByIdPizza = async function (id) {
     try {
+        let sql = `select * from tbl_pizza where id=${id};`
 
+        let result = await knexConection.raw(sql)
+
+        if (Array.isArray(result)) {
+            return result[0]
+        } else {
+            return false
+        }
 
     } catch (error) {
         return false
@@ -45,15 +53,13 @@ const select_pizza = async function () {
 
 const selectALL_pizza = async function () {
     try {
-        //Script SQL para listar todos os filmes
+
         let sql = 'select * from tbl_pizza order by id desc'
 
-        //Executa no BD o script e guarda o retorno do BD, Pode ser um ERRO (false) Ou um Array com os dados
         let result = await knexConection.raw(sql)
 
-        //Validação para verificar se o retorno do BD é um Array ou um Boolean (False)
         if (Array.isArray(result)) {
-            return result[0]  //Retorna somente o indice com a lista de filmes
+            return result[0]
         } else {
             return false
         }
@@ -62,17 +68,35 @@ const selectALL_pizza = async function () {
     }
 }
 
-const update_algo = async function (algo) {
+const update_pizza = async function (pizza) {
     try {
+        let sql = `update tbl_filme set
+        nome             = '${pizza.nome}',
+        descricao         = '${pizza.descricao}',
+        imagem             = '${pizza.imagem}',
+         where id             = ${pizza.id};`
 
+        let result = await knexConection.raw(sql)
+        if (result)
+            return true
+
+        else
+            return false
     } catch (error) {
         return false
     }
 }
 
-const delet_algo = async function (algo) {
+const delet_pizza = async function (id) {
     try {
+        let sql = `delete from tbl_pizza where id=${id}`
 
+        let result = await knexConection.raw(sql)
+
+        if(result)
+            return true
+        else
+            return false
     } catch (error) {
         return false
     }
@@ -80,5 +104,8 @@ const delet_algo = async function (algo) {
 
 module.exports = {
     insert_pizza,
-    selectALL_pizza
+    selectALL_pizza,
+    select_ByIdPizza,
+    update_pizza,
+    delet_pizza
 }
