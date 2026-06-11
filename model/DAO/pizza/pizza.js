@@ -59,4 +59,6 @@ const delet_algo = async function(algo){
     }
 }
 
-module.exports={}
+module.exports={
+    insert_pizza
+}
