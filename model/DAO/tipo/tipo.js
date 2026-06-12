@@ -27,7 +27,6 @@ const insertTipo = async function(tipo){
         return false
     }
 }
-
 const selectByIdTipo = async function(id){
     try {
         let sql = `select * from tbl_tipo where id = ${id}`
@@ -43,7 +42,6 @@ const selectByIdTipo = async function(id){
         return false
     }
 }
-
 const selectALLTipo = async function(){
     try {
         let sql = 'select * from tbl_tipo order by id desc'
@@ -59,7 +57,6 @@ const selectALLTipo = async function(){
         return false
     }
 }
-
 const updateTipo = async function(tipo){
     try {
         let sql =`update tbl_tipo set
@@ -76,7 +73,6 @@ const updateTipo = async function(tipo){
         return false
     }
 }
-
 const deleteTipo = async function(id){
     try {
         let sql = `delete from tbl_tipo where id = ${id}`

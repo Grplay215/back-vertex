@@ -35,6 +35,40 @@ const inserirnovotipo = async function(tipo, contentType) {
             return customMessage.ERROR_INTERNAL_SERVER_CONTROLLER //500 controll
             }
 }
+const atualizartipo = async function(tipo, contentType, id) {
+    let customMessage = JSON.parse(JSON.stringify(configMessages))
+    try {
+        
+        if(String(contentType).toUpperCase() == 'APPLICATION/JSON'){
+            let validarID = await buscartipo(id)
+            if(validarID.status){
+                let validar = await validardados(tipo)
+                if(!validarID){
+                    tipo.id = Number(id)
+
+                    let result = await tipoDAO.updateTipo(await tratardados(tipo))
+
+                    if(result){
+                        customMessage.DEFAULT_MESSAGE.status         = customMessage.SUCCESS_UPDATED_ITEM.status
+                        customMessage.DEFAULT_MESSAGE.status_code    = customMessage.SUCCESS_UPDATED_ITEM.status_code
+                        customMessage.DEFAULT_MESSAGE.message        = customMessage.SUCCESS_UPDATED_ITEM.message
+                        customMessage.DEFAULT_MESSAGE.response       = tipo
+                    }else{
+                        return customMessage.ERROR_INTERNAL_SERVER_MODEL
+                    }
+                }else{
+                    return validar
+                }
+            }else{
+                return validarID
+            }
+        }else{
+            return customMessage.ERROR_CONTENT_TYPE
+        }
+    } catch (error) {
+        return customMessage.ERROR_INTERNAL_SERVER_CONTROLLER
+    }
+}
 const listartipo = async function() {
 
     let customMessage = JSON.parse(JSON.stringify(configMessages))
@@ -89,7 +123,31 @@ const buscartipo = async function(id) {
         return customMessage.ERROR_INTERNAL_SERVER_CONTROLLER
     }
 }
+const excluirtipo = async function(id) {
+    let customMessage = JSON.parse(JSON.stringify(configMessages))
 
+    try {
+        let validar = await buscartipo(id)
+
+            if(validar.status){
+                let result = await tipoDAO.deleteTipo(id)
+                if(result){
+
+                    customMessage.DEFAULT_MESSAGE.status = customMessage.SUCCESS_DELETED_ITEM.status
+                    customMessage.DEFAULT_MESSAGE.status_code = customMessage.SUCCESS_DELETED_ITEM.status_code
+                    customMessage.DEFAULT_MESSAGE.message = customMessage.SUCCESS_DELETED_ITEM
+
+                    return customMessage.DEFAULT_MESSAGE
+                }else{
+                    return customMessage.ERROR_INTERNAL_SERVER_MODEL
+                }
+            }else{
+                return validar
+            }
+    } catch (error) {
+        customMessage.ERROR_INTERNAL_SERVER_CONTROLLER
+    }
+}
 
 const validardados = async function(tipo) {
 
@@ -112,5 +170,7 @@ const tratardados = async function(tipo) {
 module.exports={
     inserirnovotipo,
     listartipo,
-    buscartipo
+    buscartipo,
+    atualizartipo,
+    excluirtipo
 }
