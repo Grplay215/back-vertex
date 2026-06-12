@@ -143,24 +143,226 @@ paths:
         '500':
           description: Error Internal Server (Controller / Model)
 
+  /v1/senai/pizzaria/pizza/tipo:
+    post:
+      tags:
+        - Tipo
+      summary: Adiciona uma novo Tipo
+      description: Endpoint para enviar os dados do tipo a ser cadastrado
+      requestBody:
+        description: JSON contendo os dados do tipo a ser inserido no sistema
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tipo'
+        required: true
+      responses:
+        '201':
+          description: Successful operation
+        '400':
+          description: Invalid input
+        '415':
+          description: Invalid Content-Type
+        '500':
+          description: Error Internal Server (Controller / Model)
+
+    get:
+      tags:
+        - Tipo
+      summary: Lista todos os tipos
+      description: Listagem de todos os tipos registrados no sistema
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tipo'          
+           
+        '404':
+          description: Not Found
+        '500':
+          description: Error Internal Server (Controller / Model)
+
+
+  /v1/senai/pizzaria/pizza/tipo/{id}:
+    get:
+      tags:
+        - Tipo
+      summary: Busca um tipo pelo ID
+      description: Retorna um tipo pelo ID
+      parameters:
+        - name: id
+          in: path
+          description: ID para realizar a busca do tipo
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tipo'          
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Not found
+        '500':
+          description: Error Internal Server (Controller / Model)  
+  
+    put:
+      tags:
+        - Tipo
+      summary: Atualizar um Tipo pelo ID
+      description: Buscar e atualizar um Tipo pelo ID
+      parameters:
+        - name: id
+          in: path
+          description: ID para realizar a busca do Tipo
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Dados para atualizar um Tipo
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tipo'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Not found
+        '415':
+          description: Invalid Content-Type
+        '500':
+          description: Error Internal Server (Controller / Model)
+
+       
+    delete:
+      tags:
+        - Tipo
+      summary: Excluir um Tipo pelo ID
+      description: Buscar e excluir um Tipo pelo ID
+      parameters:
+        - name: id
+          in: path
+          description: ID para buscar o Tipo
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Not found
+        '500':
+          description: Error Internal Server (Controller / Model)
+
+  /v1/senai/pizzaria/adm:
+    post:
+      tags:
+        - Administrador
+      summary: Adiciona um novo administrador
+      description: Endpoint para enviar os dados do administrador a ser cadastrado
+      requestBody:
+        description: JSON contendo os dados do administrador a ser inserido no sistema
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Administrador'
+        required: true
+      responses:
+        '201':
+          description: Successful operation
+        '400':
+          description: Invalid input
+        '415':
+          description: Invalid Content-Type
+        '500':
+          description: Error Internal Server (Controller / Model)
+
+  /v1/senai/pizzaria/autenticacao/adm:
+    post:
+      tags:
+        - Administrador
+      summary: Autentica o administrador
+      description: Endpoint para autenticar o administrador
+      requestBody:
+        description: JSON contendo os dados do administrador a ser autenticado no sistema
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Administrador'
+        required: true
+      responses:
+        '201':
+          description: Successful operation
+        '400':
+          description: Invalid input
+        '415':
+          description: Invalid Content-Type
+        '500':
+          description: Error Internal Server (Controller / Model)
+
 components:
   schemas:
     Pizza:
       required:
+        - id
+        - nome
         - descricao
         - imagem
+        - tipo
       type: object
       properties:
         id:
           type: integer
+        nome:
+          type: string
         descricao:
           type: string
         imagem:
           type: string
-        sabor:
-          type: string
+        tipo:
+          type: array
+    Tipo:
+      required:
+      - id
+      - tipo 
+      type: object
+      properties:
+        id:
+          type: integer
         tipo:
           type: string
+
+    Administrador:
+      required:
+      - id
+      - nome
+      - senha
+      type: object
+      properties:
+        id:
+          type: integer
+        nome:
+          type: string
+        senha:
+          type: string
+
 
   requestBodies:
     Pizza:
@@ -169,3 +371,17 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Pizza'
+
+    Tipo:
+      description: Objeto que deve ser enviado no Body das requisicoes
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Tipo'
+
+    Administrador:
+      description: Objeto que deve ser enviado no Body das requisicoes
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Administrador'
