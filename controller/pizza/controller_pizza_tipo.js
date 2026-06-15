@@ -22,7 +22,7 @@ const inserirNovaPizzaTipo = async function (pizzaTipo) {
         } else {
             let result = await pizTipDAO.insert_PizzaTipo(pizzaTipo)
             if (result) {
-                filmeGenero.id = result
+                pizzaTipo.id = result
                 customMessage.DEFAULT_MESSAGE.status = customMessage.SUCCESS_CREATED_ITEM.status
                 customMessage.DEFAULT_MESSAGE.status_code = customMessage.SUCCESS_CREATED_ITEM.status_code
                 customMessage.DEFAULT_MESSAGE.message = customMessage.SUCCESS_CREATED_ITEM.message
@@ -74,7 +74,7 @@ const buscarPizzaTipo = async function (id) {
                 if (result.length > 0) {
                     customMessage.DEFAULT_MESSAGE.status = customMessage.SUCCESS_RESPONSE.status
                     customMessage.DEFAULT_MESSAGE.status_code = customMessage.SUCCESS_RESPONSE.status_code
-                    customMessage.DEFAULT_MESSAGE.response.filme_genero = result
+                    customMessage.DEFAULT_MESSAGE.response.pizza_tipo = result
 
                     return customMessage.DEFAULT_MESSAGE
                 } else {
@@ -155,7 +155,7 @@ const atualizarPizzaTipo = async function (pizzaTipo, id) {
             let validar = await validarDados(pizzaTipo)
             if (!validar) {
                 pizzaTipo.id = id
-                let result = await filmeGenDAO.updateGenero(pizzaTipo)
+                let result = await pizTipDAO.update_PizzaTipo(pizzaTipo)
                 if (result) {
                     customMessage.DEFAULT_MESSAGE.status = customMessage.SUCCESS_UPDATE_ITEM.status
                     customMessage.DEFAULT_MESSAGE.status_code = customMessage.SUCCESS_UPDATE_ITEM.status_code
@@ -220,6 +220,7 @@ const excluirTipoIdPizza = async function (idPizza) {
 
 
 const validarDados = async function (pizzaTipo) {
+    let customMessage = JSON.parse(JSON.stringify(configMessages))
     if (pizzaTipo.id_pizza == undefined || pizzaTipo.id_pizza == '' || pizzaTipo.id_pizza == null || pizzaTipo.id_pizza <= 0 || isNaN(pizzaTipo.id_pizza)) {
         customMessage.ERROR_BAD_REQUEST.field = '[ID_PIZZA] INVÁLIDO'
         return customMessage.ERROR_BAD_REQUEST

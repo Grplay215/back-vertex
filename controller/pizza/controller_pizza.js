@@ -38,6 +38,7 @@ const inserirNovaPizza = async function (pizza, contentType) {
                         let resultPizzaTipo = await controllerPizzaTipo.inserirNovaPizzaTipo(pizzaTipo)
 
                         //Validação para verificar se todos os itens de relacionamento foram inseridos
+                        
                         if (!resultPizzaTipo.status) {
                             return customMessage.SUCCESS_CREATED_ITEM_WARNING  //201 com alerta de cadastro
                         }

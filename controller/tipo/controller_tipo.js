@@ -1,3 +1,9 @@
+/***********************************************************************************************************************
+ * Objetivo: Arquivo responsável pela validação, tratamento, manipulação de dados para realizar o CRUD de tipo
+ * Data: 20/06/2026
+ * Autor: Gabriel
+ * Versão: 1.0
+ ***********************************************************************************************************************/
 
 const configMessages = require('../modulo/configMessages.js')
 const tipoDAO = require('../../model/DAO/tipo/tipo.js')
@@ -153,7 +159,7 @@ const validardados = async function(tipo) {
 
    let customMessage = JSON.parse(JSON.stringify(configMessages))
 
-        if(tipo.nome == undefined  || tipo.nome == null || tipo.nome == '' || tipo.nome.length > 40){
+        if(tipo.nome == undefined  || tipo.nome == null || tipo.nome == '' || tipo.nome.length > 20){
             customMessage.ERROR_BAD_REQUEST.field = '[NOME] INVÁLIDO'
             return customMessage.ERROR_BAD_REQUEST
         }
