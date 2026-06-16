@@ -16,6 +16,7 @@ const ERROR_INTERNAL_SERVER_MODEL      = {status: false, status_code: 500, messa
 const ERROR_INTERNAL_SERVER_CONTROLLER = {status: false, status_code: 500, message: 'Não foi possível processar a requisição devido a um erro interno no servidor [CONTROLLER]'}
 const ERROR_CONTENT_TYPE               = {status: false, status_code: 415, message: 'Não foi possível processar a requisição de dados encaminhado, pois não é suportado pelo servidor, apenas deve ser utilizado JSON.'}
 const ERROR_NOT_FOUND                  = {status: false, status_code: 404, message: 'Não foram encontrados dados para retorno.'}
+const ERROR_UNAUTHORIZED               = {status: false, status_code: 401, message: 'Não foi possivel validar a senha'}
 
 //Mensagens de SUCESSO 
 const SUCCESS_CREATED_ITEM = {status: true, status_code: 201, message: 'Item inserido com sucesso!'}
@@ -36,5 +37,6 @@ module.exports = {
     SUCCESS_RESPONSE,
     SUCCESS_UPDATE_ITEM,
     SUCCESS_DELETED_ITEM,
-    SUCCESS_CREATED_ITEM_WARNING
+    SUCCESS_CREATED_ITEM_WARNING,
+    ERROR_UNAUTHORIZED
 }

@@ -119,5 +119,6 @@ module.exports={
     selectByIdAdministrador,
     selectALLAdministrador,
     updateAdministrador,
-    deleteAdministrador
+    deleteAdministrador,
+    selectAdministradorByNome
 }
