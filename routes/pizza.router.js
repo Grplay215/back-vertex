@@ -1,4 +1,4 @@
-const express = require('express')
+const express   = require ('express')
 const bodyparser = require('body-parser')
 
 const bodyparserJSON = bodyparser.json()
@@ -15,6 +15,7 @@ router.post('/', bodyparserJSON, async function(request, response){
     
     response.status(result.status_code)
     response.json(result)
+
 })
 router.get('/', bodyparserJSON, async function(request, response){
 
@@ -24,5 +25,32 @@ router.get('/', bodyparserJSON, async function(request, response){
     response.json(result)
 
 })
+router.get('/:id', bodyparserJSON, async function(request, response){
+    let id = request.params.id
+    let result = await controllerPizza.buscarPizza(id)
+    
+    response.status(result.status_code)
+    response.json(result)
+
+})
+router.put('/:id', bodyparserJSON, async function(request, response){
+    let id = request.params.id
+    let dados = request.body
+    let contentType = request.headers['content-type']
+
+    let result = await controllerPizza.atualizarPizza(dados, contentType, id)
+    
+    response.status(result.status_code)
+    response.json(result)
+})
+router.delete('/:id', bodyparserJSON, async function(request, response){
+    let id = request.params.id
+    let result = await controllerPizza.excluirPizza(id)
+    
+    response.status(result.status_code)
+    response.json(result)
+
+})
+
 
 module.exports = router
