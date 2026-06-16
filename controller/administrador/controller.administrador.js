@@ -7,6 +7,8 @@
 
 const configMessages = require('../modulo/configMessages.js')
 const admDAO = require('../../model/DAO/administrador/administrador.js')
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 const inserirNovoAdministrador = async function (administrador, contentType) {
     let customMessage = JSON.parse(JSON.stringify(configMessages))
@@ -17,6 +19,12 @@ const inserirNovoAdministrador = async function (administrador, contentType) {
             if (validar) {
                 return validar
             } else {
+
+                administrador.senha = await bcrypt.hash(
+                    administrador.senha,
+                    10
+                )
+
                 let result = await admDAO.insertAdministrador(await tratarDados(administrador))
 
                 if (result) {
@@ -38,6 +46,63 @@ const inserirNovoAdministrador = async function (administrador, contentType) {
         console.log(error)
         return customMessage.ERROR_INTERNAL_SERVER_CONTROLLER
     }
+}
+
+const autenticarAdministrador = async function (administrador, contentType) {
+    let customMessage = JSON.parse(JSON.stringify(configMessages))
+
+    try {
+        if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
+            let validar = await validarDados(administrador)
+            if (validar) {
+                return validar
+            } else {
+
+                // const senhaValida = await bcrypt.compare(
+                //     administrador.
+                // )
+
+                administrador = await tratarDados(administrador)
+                let result = await admDAO.selectAdministradorByNome(administrador.nome)
+
+
+                if (result) {
+
+                    if (result.length > 0) {
+
+                        const senhaValida =
+                            await bcrypt.compare(
+                                administrador.senha,
+                                result[0].senha
+                            )
+                            
+                        if (!senhaValida) {
+                            return customMessage.ERROR_UNAUTHORIZED
+                        }
+
+                        delete result[0].senha
+                        customMessage.DEFAULT_MESSAGE.status = customMessage.SUCCESS_RESPONSE.status
+                        customMessage.DEFAULT_MESSAGE.status_code = customMessage.SUCCESS_RESPONSE.status_code
+                        customMessage.DEFAULT_MESSAGE.response.administrador = result
+
+                        return customMessage.DEFAULT_MESSAGE //200
+                    } else {
+
+                        customMessage.ERROR_NOT_FOUND.field = '[ADMINISTRADOR]'
+                        return customMessage.ERROR_NOT_FOUND //404
+                    }
+                } else {
+                    return customMessage.ERROR_INTERNAL_SERVER_MODEL
+                }
+            }
+        } else {
+            return customMessage.ERROR_CONTENT_TYPE
+        }
+    } catch (error) {
+        console.log(error)
+        return customMessage.ERROR_INTERNAL_SERVER_CONTROLLER
+    }
+
 }
 
 
