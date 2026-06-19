@@ -8,8 +8,8 @@ const bodyParserJSON = bodyparser.json()
 const app = express()
 
 const corsOptions = {
-    origin:['*'],   
-    methods: 'GET, POST, PUT, DELETE, OPTION',  
+    origin: '*',                              // antes: origin: ['*']
+    methods: 'GET, POST, PUT, DELETE, OPTIONS', // antes: '...OPTION' (sem o S)  
     allowedHeaders: ['Content-type', 'Authorization'] 
 }
 
